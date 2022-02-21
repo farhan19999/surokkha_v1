@@ -1,0 +1,50 @@
+:root {
+    --orange--color1:#FF6B00;
+    --orange--color2: #FF3D00;
+    --violate--color1: #5200FF;
+    --violate--color2: #7000FF;
+    --black--color: #000000;
+
+}
+
+.hero{
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: coral;
+    
+}
+
+.reg-button-text{
+    height: 20;
+    background-color: blue;
+}
+
+.registration-icon{
+    width: 80px;
+    height: 80px;
+}
+
+.option-icon{
+    width: 40px;
+    height: 40px;
+}
+
+.footer-top {
+    color: white;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    background-color: coral;
+}
+
+.footer-top a {
+    color: white;
+}
+
+.footer-top a:hover {
+    color: var(--orange--color2);
+}
+
+.column-element{
+    margin-bottom: 15px;
+}

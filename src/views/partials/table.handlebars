@@ -1,0 +1,22 @@
+<div class="table-responsive">
+    <table id = "table_id" class="table table-bordered table-striped table-hover caption-top">
+        <caption>{{partials.table.tableName}}</caption>
+        <thead>
+        <tr>
+            {{#each partials.table.tableHead}}
+                <th scope = "col">{{name}}</th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody>
+        <!-- tableData : [{key1:value1,key2:value2},{key1:value3,key2:value4}]-->
+        {{#each partials.table.tableData}}
+            <tr>
+                {{#each this}}
+                    <td>{{.}}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>

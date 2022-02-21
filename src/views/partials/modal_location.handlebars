@@ -1,0 +1,49 @@
+<div class="modal" tabindex="-1" id="modalId" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{partials.table.tableName}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="{{partials.table.tableName}}Form">
+                    <div class="mb-3">
+                        <label for="location_id" class="form-label">Location ID</label>
+                        <input type="number" readonly class="form-control" id="location_id" name = "location_id">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="union_or_ward" class="form-label">Ward/Union</label>
+                        <input type="number"  class="form-control" id="union_or_ward" name = "union_or_ward">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="city_or_municipality" class="form-label">City Corporation/Municipality</label>
+                        <input type="text"  class="form-control" id="city_or_municipality" name = "city_or_municipality">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="upazilla_or_thana" class="form-label">Upazilla/Thana</label>
+                        <input type="text"  class="form-control" id="upazilla_or_thana" name="upazilla_or_thana">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="district" class="form-label">District</label>
+                        <input type="text"  class="form-control" id="district" name="district">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="division" class="form-label">Division</label>
+                        <input type="text"  class="form-control" id="division" name="division">
+                    </div>
+                    <button type="submit" class="btn btn-primary" hidden>Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-close-id" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="modal-save-id" type="button" class="btn btn-primary">Save changes</button>
+                <button id="modal-insert-id" type="button" class="btn btn-primary">Insert</button>
+            </div>
+        </div>
+    </div>
+</div>

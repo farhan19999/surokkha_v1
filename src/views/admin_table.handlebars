@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="btn-group">
+                <a type="button" class="btn btn-secondary" href="/tables/location" role="button">Location</a>
+                <a type="button" class="btn btn-secondary" href="/tables/vaccine" role="button">Vaccine</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="btn-group">
+            <button id = "insertButton" type ="button" class = "btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalId">insert</button>
+            <button id = "editButton" type ="button" class = "btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalId" disabled>edit</button>
+            <button id = "deleteButton" type ="button" class = "btn btn-dark"  disabled>delete</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{>table }}
+            {{>modal}}
+        </div>
+    </div>
+</div>

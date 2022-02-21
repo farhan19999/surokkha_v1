@@ -1,0 +1,18 @@
+<body class="text-center">
+<script src="/v1/public/js/wLogin.front.js" ></script>
+<link href="/v1/public/css/centerLogin.css" rel="stylesheet">
+<main class="center-form-signin">
+    <form id="wLoginForm" method="post" action="/white/login/process">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="username" name="username" placeholder="your institution name...">
+            <label for="username">User Name</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+            <label for="password">Password</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    </form>
+</main>
+</body>
