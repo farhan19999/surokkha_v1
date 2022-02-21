@@ -41,11 +41,43 @@
 </div>
 
 <section id="verification">
+    <form id="verificationForm">
+        <select id="selectType" class="form-select">
+            <option selected value="none">--Select File Type--</option>
+            <option value="NID">NID</option>
+            <option value="BCF">BCF</option>
+        </select>
+        <label for="nid" class="form-label" >NID Number :</label>
+        <input type="number" id="nid" name="nid" class="form-control"
+               placeholder="Example - 19825624603112948" maxlength="13" autocomplete="off">
+        <label for="bcf" class="form-label" >Birth Registration Number :</label>
+        <input type="number" id="bcf" name="bcf" class="form-control"
+               placeholder="Example - 19825624603112948" maxlength="17" autocomplete="off">
+        <h5>Date of Birth :</h5>
+        <input type="date" id="dob" name="dob">
 
+        <label for="pwd" class="form-label">
+            <h5>Password :</h5>
+        </label>
+        <input type="password" id="pwd" name="pwd" class="form-control"
+               placeholder="Enter a valid password">
+        <button type="button" class="btn-primary" id="statusBtn">Get Status</button>
+    </form>
 </section>
 
-<section>
-
+<section id="statusSection" hidden>
+    <table class="table table-striped" id="historyTable">
+        <thead>
+        <tr>
+            <th scope="col">Dose No</th>
+            <th scope="col">Vaccine Given Date</th>
+            <th scope="col">Vaccination Center</th>
+            <th scope="col">Vaccine Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </section>
 
 {{>footer}}
@@ -56,6 +88,17 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+<script src="/v1/public/js/status.front.js"></script>
+<script id="historyTemp" type="text/x-handlebars-template">
+    \{{#each history}}
+        <tr>
+            <th scope="row">\{{DOSE_NO}}</th>
+            <td>\{{GIVEN_DATE}}</td>
+            <td>\{{CENTER}}</td>
+            <td>\{{VACCINE_NAME}}</td>
+        </tr>
+    \{{/each}}
+</script>
 
 <!-- Option 2: Separate Popper and Bootstrap JS -->
 <!--

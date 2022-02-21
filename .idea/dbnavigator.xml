@@ -37,9 +37,7 @@
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="c579a306-83f4-4b3c-baa6-c24f6b31e3ee" object-ref="schemas/TESTDB1/tables/USER_DOSAGE_HISTORY" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="c579a306-83f4-4b3c-baa6-c24f6b31e3ee" />

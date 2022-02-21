@@ -42,7 +42,7 @@ findUser = async function(uid,type,dob,password){
                 outFormat: oracledb.OUT_FORMAT_OBJECT
             }
         );
-        user = result.rows;
+        user = result.rows[0];
     }catch (e){
         console.log('Error in finding user in db....');
         console.log(e);
@@ -176,9 +176,9 @@ run = function (){
         .catch(e=>{console.log(e);});
      */
     //findUser(1234567890,'NID','2000-02-01').then(v=>console.log(v)).catch(e=>console.log(e));
-    findUserHistory(1).then(v=>console.log(v));
+    findUserHistory('1').then(v=>console.log(v));
 };
-run();
+//run();
 
 module.exports ={
     registerUserInDB,
