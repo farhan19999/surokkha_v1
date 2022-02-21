@@ -12,7 +12,7 @@ var config = require('../config/database.config');
  *
  */
 
-findUser = async function(uid,type,dob){
+findUser = async function(uid,type,dob,password){
     let connection;
     let data = {DATE_OF_BIRTH:dob};
     let nid,bcf,user;
@@ -27,6 +27,10 @@ findUser = async function(uid,type,dob){
     {
         sql1 += ` AND BIRTH_CERTIFICATE_NO = :BIRTH_CERTIFICATE_NO`;
         data.BIRTH_CERTIFICATE_NO = uid;
+    }
+    if(password !== ''){
+        sql1 += ` AND PASSWORD = :PASSWORD`;
+        data.PASSWORD = password;
     }
     try{
         connection = await oracledb.getConnection(config);
@@ -124,6 +128,39 @@ updateHistory = async (data)=> {
     }
 };
 
+findUserHistory = async function(uid){
+    let history = [];
+    let connection;
+    try{
+        connection = await oracledb.getConnection(config);
+        let result = await connection.execute(
+          `SELECT UDH.DOSE_NO AS DOSE_NO, to_char(UDH.GIVEN_DATE,'dd/mm/yyyy') AS GIVEN_DATE, VC.CENTER_NAME AS CENTER, V.VACCINE_NAME AS VACCINE_NAME 
+           FROM USER_DOSAGE_HISTORY UDH JOIN VACCINE V ON(UDH.VACCINE_ID = V.VACCINE_ID) JOIN VACCINATION_CENTER VC ON(UDH.CENTER_ID = VC.CENTER_ID)
+           WHERE UDH.REGISTRATION_ID = :t`,
+           [uid],
+            {
+                resultSet : true,
+                outFormat: oracledb.OUT_FORMAT_OBJECT
+            }
+        );
+        let row;
+        while((row = await result.resultSet.getRow())){
+            history.push(row);
+        }
+        await result.resultSet.close();
+
+    }catch (e){console.log(e);}
+    finally {
+        try{
+            await connection.close();
+        }
+        catch (e){console.log(e);}
+    }
+    return history;
+}
+
+
+
 run = function (){
     /*updateHistory({type:'many',array: [
             {
@@ -139,11 +176,13 @@ run = function (){
         .catch(e=>{console.log(e);});
      */
     //findUser(1234567890,'NID','2000-02-01').then(v=>console.log(v)).catch(e=>console.log(e));
+    findUserHistory(1).then(v=>console.log(v));
 };
-//run();
+run();
 
 module.exports ={
     registerUserInDB,
     updateHistory,
-    findUser
+    findUser,
+    findUserHistory
 };

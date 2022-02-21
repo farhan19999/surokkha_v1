@@ -13,7 +13,7 @@ verification = function (req,res,next){
         let category ={};
         category.sector_id = req.body.sector_id;
         if(req.body.sub_sector_id)category.sub_sector_id = req.body.sub_sector_id;
-        userModel.findUser(data.nid,'NID',data.dob)
+        userModel.findUser(data.nid,'NID',data.dob,'')
             .then(value => {
                 if(value){
                     req.body.verified = 2;
@@ -46,7 +46,7 @@ verification = function (req,res,next){
     }
     else if(req.body.regMethod === '2'){
         data.bcf  = req.body.bcf;
-        userModel.findUser(data.nid,'NID',data.dob)
+        userModel.findUser(data.nid,'NID',data.dob,'')
             .then(value => {
                 if(value){
                     req.body.verified = 2;
