@@ -21,12 +21,15 @@ router.get('/',function (req,res){
 router.use('/s/1',controller.verification);
 router.post('/s/1',function (req,res){
     //find name
-    if(req.body.verified === 1) {
+    if(req.body.verified === 0){
+        res.send({success:false, msg : 'You are not enlisted' });
+    }
+    else if(req.body.verified === 1) {
         res.send({success:true, name : req.body.name});
     }
-    else{
-        console.log('User couldn\'t be verified');
-        res.send({success:false});
+    else if(req.body.verified === 2){
+        console.log('User is already registered..');
+        res.send({success:false, msg : 'User is already registered..'});
     }
 });
 router.post('/s/2',controller.registerUser,function (req,res){

@@ -13,37 +13,64 @@ verification = function (req,res,next){
         let category ={};
         category.sector_id = req.body.sector_id;
         if(req.body.sub_sector_id)category.sub_sector_id = req.body.sub_sector_id;
-        categoryModel.findCategoryId(category)
-            .then(v=>{
-                data.category_id = v;
-                nidModel.verifyPreReg(data)
-                    .then(n=>{
-                        //console.log(n);
-                        if(n){
-                            req.body.name = n;
-                            req.body.verified = 1;
-                        }
-                        else req.body.verified = 0;
-                        next();
-                    })
-                    .catch(e=>{next(e);});
+        userModel.findUser(data.nid,'NID',data.dob)
+            .then(value => {
+                if(value){
+                    req.body.verified = 2;
+                    next();
+                }
+                else {
+                    categoryModel.findCategoryId(category)
+                        .then(v=>{
+                            data.category_id = v;
+                            nidModel.verifyPreReg(data)
+                                .then(n=>{
+                                    //console.log(n);
+                                    if(n){
+                                        req.body.name = n;
+                                        req.body.verified = 1;
+                                    }
+                                    else req.body.verified = 0;
+                                    next();
+                                })
+                                .catch(e=>{next(e);});
+                        })
+                        .catch(e=>{console.log('Nid Verification error')});
+                }
             })
-            .catch(e=>{console.log('Nid Verification error')});
+            .catch(e=>{
+                console.log('Error in finding user');
+                console.log(e);
+            });
+
     }
     else if(req.body.regMethod === '2'){
         data.bcf  = req.body.bcf;
-        bcfModel.verifyPreReg(data)
-            .then(n=>{
-                if(n){
-                    req.body.name = n;
-                    req.body.verified = 1;
+        userModel.findUser(data.nid,'NID',data.dob)
+            .then(value => {
+                if(value){
+                    req.body.verified = 2;
+                    next();
                 }
-                else req.body.verified = 0;
-                next();
+                else {
+                    bcfModel.verifyPreReg(data)
+                        .then(n=>{
+                            if(n){
+                                req.body.name = n;
+                                req.body.verified = 1;
+                            }
+                            else req.body.verified = 0;
+                            next();
+                        })
+                        .catch(e=>{
+                            console.log(e);
+                            next(e);
+                        });
+                }
             })
             .catch(e=>{
+                console.log('Error in finding user');
                 console.log(e);
-                next(e);
             });
     }
     else next();

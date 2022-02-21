@@ -129,7 +129,7 @@ verify = function (event){
             //console.log('received data : ' + value);
             if(value.success === true)gotoSecondStep(value.name);
             else {
-                alert('You are not enlisted');
+                alert(value.msg);
             }
         }
     });

@@ -144,5 +144,6 @@ run = function (){
 
 module.exports ={
     registerUserInDB,
-    updateHistory
+    updateHistory,
+    findUser
 };
