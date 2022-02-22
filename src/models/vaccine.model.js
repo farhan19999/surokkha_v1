@@ -78,9 +78,8 @@ loadAllVaccine = async function() {
     return {tableName:'vaccine',tableHead:metaData,tableData:table};
 };
 updateVaccine = async function (row){
-    //let old = await findLocationByID(row.location_id);
-    //can't compare whole row and update only those row because it's pain
     let connection;
+    let r;
     try{
         connection = await oracledb.getConnection(config);
         let result = await connection.execute
@@ -95,8 +94,8 @@ updateVaccine = async function (row){
                 autoCommit:true
             }
         );
-        //console.log('Row updated : '+result.rowsAffected);
-        //if(result.rowsAffected)insertedRowID = result.lastRowid;
+        if(result.rowsAffected)r=result.rowsAffected;
+
     }catch (e)
     {
         console.log(e);
@@ -111,10 +110,16 @@ updateVaccine = async function (row){
             }
         }
     }
+    return r;
 };
 deleteVaccine = async function(row){
+    //console.log(row);
     let connection;
+    var r;
     let data = {vaccine_id : row.vaccine_id};
+    if(!data.vaccine_id){
+        return r;
+    }
     try{
         connection = await oracledb.getConnection(config);
         let result = await connection.execute
@@ -123,11 +128,12 @@ deleteVaccine = async function(row){
              WHERE VACCINE_ID = :vaccine_id`,
             data,
             {
-                //autoCommit:true
+                autoCommit:true
             }
         );
-        console.log('Row deleted : '+result.rowsAffected);
-        //if(result.rowsAffected)insertedRowID = result.lastRowid;
+        if(result.rowsAffected){
+            r = result.rowsAffected;
+        }
     }catch (e)
     {
         console.log(e);
@@ -142,6 +148,7 @@ deleteVaccine = async function(row){
             }
         }
     }
+    return r;
 };
 insertVaccine = async function (row) {
     let insertedRowID; //for updating table in ui
@@ -162,11 +169,21 @@ insertVaccine = async function (row) {
              (:vaccine_name, :manufacturer, :shelf_life, :stock)`,
             data,
             {
-                //autoCommit : true
+                autoCommit : true
             }
         );
         console.log('Row inserted : '+result.rowsAffected);
-        if(result.rowsAffected)insertedRowID = result.lastRowid;
+        if(result.rowsAffected){
+            result = await connection.execute
+            (   `SELECT VACCINE_ID FROM VACCINE WHERE VACCINE_NAME = :vaccine_name`,
+                data,
+                {
+                    maxRows :1,
+                    outFormat: oracledb.OUT_FORMAT_OBJECT
+                }
+            );
+            if(result.rows[0])insertedRowID = result.rows[0].VACCINE_ID;
+        }
     }catch (e)
     {
         console.log(e);
@@ -209,9 +226,12 @@ findVaccineID = async function(vaccine_name, manufacturer) {
 
 //test function
 run = function (){
-    findVaccineID('Comirnaty','Pfizer')
+    /*findVaccineID('Comirnaty','Pfizer')
         .then(r=>{console.log(r);})
         .catch(e=>{console.log(e);});
+
+     */
+    deleteVaccine({vaccine_id: 21}).then(r=>console.log(r));
 };
 //run();
 

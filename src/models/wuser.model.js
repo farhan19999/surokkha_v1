@@ -268,7 +268,7 @@ updateUser = async function(data){
                 autoCommit :true
             }
         );
-        affectedRow = result.rowsAffected;
+       if(result.rowsAffected) affectedRow = result.rowsAffected;
     }catch (e){
         console.log(e);
     }

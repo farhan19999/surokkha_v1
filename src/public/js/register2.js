@@ -13,7 +13,7 @@ loadCenter = function (district,ut){
 
 setCenters = function (data)
 {
-    $('#selectCenterId').empty().append('<option selected disabled value="">--Select--</option>');
+    $('#selectCenterId').empty().append('<option selected  value="">--Select--</option>');
     var str = showCenter({center:data}).split('\n');
     str.forEach(s=>{
         $('#selectCenterId').append(s);
@@ -24,9 +24,23 @@ getStep1Data = function (){
 }
 
 checkValidData = function (){
+
+    var unw = $('#selectUnwId option:selected').val();
+    var ut = $('#selectUtId option:selected').val();
+    var cityMun = $('#selectCityMunId option:selected').val();
+    var dist = $('#selectDistId option:selected').val();
+    var div = $('#selectDivId option:selected').val();
+    var prefCenterId = $('#selectCenterId option:selected').val();
+
     if($('#mobile-number').val().length !== 11)
     {
         alert('Not a valid phone Number');
+        return false;
+    }
+
+    if(unw === "" ||ut === "" ||cityMun === "" ||dist === "" ||div === "" || prefCenterId === '')
+    {
+        alert('Enter proper information');
         return false;
     }
     return true;
@@ -74,28 +88,28 @@ resetLocation = function (type, data){
     var str = showLocation({location:data}).split('\n');
     if(type==='dis')
     {
-        $('#selectDistId').empty().append('<option selected disabled value="">--Select--</option>')
+        $('#selectDistId').empty().append('<option selected  value="">--Select--</option>')
         str.forEach(s=>{
            $('#selectDistId').append(s);
         });
     }
     else if(type==='uT')
     {
-        $('#selectUtId').empty().append('<option selected disabled value="">--Select--</option>')
+        $('#selectUtId').empty().append('<option selected  value="">--Select--</option>')
         str.forEach(s=>{
             $('#selectUtId').append(s);
         });
     }
     else if(type==='cityMun')
     {
-        $('#selectCityMunId').empty().append('<option selected disabled value="">--Select--</option>')
+        $('#selectCityMunId').empty().append('<option selected  value="">--Select--</option>')
         str.forEach(s=>{
             $('#selectCityMunId').append(s);
         });
     }
     else if(type==='unw')
     {
-        $('#selectUnwId').empty().append('<option selected disabled value="">--Select--</option>')
+        $('#selectUnwId').empty().append('<option selected  value="">--Select--</option>')
         str.forEach(s=>{
             $('#selectUnwId').append(s);
         });
@@ -169,7 +183,7 @@ setDistrict = function (event)
 setUT = function (event)
 {
     clearCityMun();
-    $('#selectCenterId').empty().append('<option selected disabled value="">--Select--</option>');
+    $('#selectCenterId').empty().append('<option selected value="">--Select--</option>');
     if($('#selectUtId option:selected').val() !== ''){
         fetchLocation('cityMun');
         loadCenter($('#selectDistId option:selected').val(),$('#selectUtId option:selected').val());
@@ -186,12 +200,12 @@ setCityMun = function (event)
 
 clearDis = function ()
 {
-    $('#selectDistId option').empty().append('<option disabled selected value="">--Select--</option>');
+    $('#selectDistId option').empty().append('<option selected value="">--Select--</option>');
     clearUT();
 }
 clearUT = function ()
 {
-    $('#selectUtId option').empty().append('<option disabled selected value="">--Select--</option>');
+    $('#selectUtId option').empty().append('<option  selected value="">--Select--</option>');
     clearCityMun();
 }
 

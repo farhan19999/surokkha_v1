@@ -11,11 +11,16 @@ app.post('/process',function (req,res){
     let {username, password} = req.body;
     wuserModel.verifyLogin(username,password)
         .then(v=>{
-           req.session.authenticated = true;
-           req.session.inst_name = v.INSTITUTION_NAME;
-           req.session.i_id = v.INSTITUTION_ID;
-           req.session.saveUninitialized = true;
-           res.redirect('/white/home');
+            if(v){
+                req.session.authenticated = true;
+                req.session.inst_name = v.INSTITUTION_NAME;
+                req.session.i_id = v.INSTITUTION_ID;
+                req.session.saveUninitialized = true;
+                res.redirect('/white/home');
+            }
+           else {
+               res.redirect('/white/login');
+            }
         })
         .catch(e=>{
             throw e;

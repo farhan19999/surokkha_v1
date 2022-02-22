@@ -18,7 +18,6 @@ regAction = function (){
 
 };
 resetCategory =function (){
-
 } ;
 
 categoryAction = function (){

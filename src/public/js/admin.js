@@ -4,8 +4,6 @@ let btn;
 let header;
 let formID,tableName;
 
-
-
 saveDataFunc = function (event){
   //have to send req to server
     let updatedData = {};
@@ -15,15 +13,20 @@ saveDataFunc = function (event){
         type : 'put',
         data : updatedData,
         success : function (msg){
-            alert('updated successfully.');
-            //now update table row
-            var array = $('#'+formID).serializeArray();
-            console.log('Serialized msg :' +updatedData);
-            console.log('serialized Array : '+array[0]);
-            var prev = table.row(selectedRowID).data();
-            for(var i = 0 ;i<prev.length ; i++)prev[i] = array[i].value;
-            //console.log(prev);
-            table.row(selectedRowID).data(prev).invalidate();
+            if(msg.success===true){
+                alert('updated successfully.');
+                //now update table row
+                var array = $('#'+formID).serializeArray();
+                console.log('Serialized msg :' +updatedData);
+                console.log('serialized Array : '+array[0]);
+                var prev = table.row(selectedRowID).data();
+                for(var i = 0 ;i<prev.length ; i++)prev[i] = array[i].value;
+                //console.log(prev);
+                table.row(selectedRowID).data(prev).invalidate();
+            }
+            else {
+                alert('Invalid data');
+            }
         }
     });
 };
@@ -35,16 +38,20 @@ insertDataFunc = function (){
         type : 'post',
         data : insertedData,
         success : function (msg){
-            alert('inserted successfully.');
-            //get new row from msg
-            let insertedDataArray = $('#'+formID).serializeArray();
-            let tableArray = table.row(0).data();
-            tableArray[0]=msg.r; //TODO: INITIALIZE WITH GETTING NEW ID
-            for(var i = 1;i<tableArray.length ; i++ )tableArray[i] = insertedDataArray[i].value;
-            //insert it into table
-            table.row.add(tableArray).draw(false);
-            $('#modalId').modal('toggle');
-
+            if(msg.msg === 'success'){
+                alert('inserted successfully.');
+                //get new row from msg
+                let insertedDataArray = $('#'+formID).serializeArray();
+                let tableArray = table.row(0).data();
+                tableArray[0]=msg.r; //TODO: INITIALIZE WITH GETTING NEW ID
+                for(var i = 1;i<tableArray.length ; i++ )tableArray[i] = insertedDataArray[i].value;
+                //insert it into table
+                table.row.add(tableArray).draw(false);
+                $('#modalId').modal('toggle');
+            }
+            else {
+                alert("Invalid data");
+            }
         }
     });
 
@@ -91,12 +98,16 @@ deleteButtonFunc = function (event) {
         type : 'delete',
         data : data,
         success : function (msg){
-            alert('deleted successfully.');
-
-            //now update table
-            var temp =selectedRowID;
-            table.row(selectedRowID).deselect();
-            table.row(temp).remove().draw();
+            if(msg.msg === 'success'){
+                alert('deleted successfully.');
+                //now update table
+                var temp =selectedRowID;
+                table.row(selectedRowID).deselect();
+                table.row(temp).remove().draw();
+            }
+            else{
+                alert('Couldn\'t Delete');
+            }
         }
     });
 };

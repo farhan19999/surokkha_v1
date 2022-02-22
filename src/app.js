@@ -25,6 +25,9 @@ app.get( '/',function(req,res,next){
 });
 app.use(function(err,req,res,next){
     console.log(err);
+    //res.render('error');
+    res.send('Server Error');
+    next();
 })
 app.use(function (req,res){
     res.status(404);

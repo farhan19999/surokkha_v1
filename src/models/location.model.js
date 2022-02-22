@@ -12,11 +12,11 @@ var config = require('../config/database.config');
 const formData =
     [
         {label:'Location ID',name:'location_id',type:'number',prop : 'readonly'},
-        {label:'Union/Ward',name:'union_or_ward',type:'number',prop:''},
-        {label:'City Corporation/Municipality',name:'city_or_municipality',type:'text',prop:''},
-        {label:'Upazilla/Thana',name:'upazilla_or_thana',type:'text',prop:''},
-        {label:'District',name:'district',type:'text',prop:''},
-        {label:'Division',name:'division',type:'text',prop:''}
+        {label:'Union/Ward',name:'union_or_ward',type:'number',prop:'required'},
+        {label:'City Corporation/Municipality',name:'city_or_municipality',type:'text',prop:'required'},
+        {label:'Upazilla/Thana',name:'upazilla_or_thana',type:'text',prop:'required'},
+        {label:'District',name:'district',type:'text',prop:'required'},
+        {label:'Division',name:'division',type:'text',prop:'required'}
     ];
 
 
@@ -45,6 +45,7 @@ updateLocation = async function (row){
     //let old = await findLocationByID(row.location_id);
     //can't compare whole row and update only those row because it's pain
     let connection;
+    let affectedRow;
     try{
         connection = await oracledb.getConnection(config);
         let result = await connection.execute
@@ -60,6 +61,7 @@ updateLocation = async function (row){
                 autoCommit:true
             }
         );
+        if(result.rowsAffected)affectedRow = result.rowsAffected;
         //console.log('Row updated : '+result.rowsAffected);
         //if(result.rowsAffected)insertedRowID = result.lastRowid;
     }catch (e)
@@ -76,9 +78,11 @@ updateLocation = async function (row){
             }
         }
     }
+    return affectedRow;
 };
 deleteLocation = async function(row){
     let connection;
+    let r;
     let data = {location_id : row.location_id};
     try{
         connection = await oracledb.getConnection(config);
@@ -89,7 +93,8 @@ deleteLocation = async function(row){
                 //autoCommit:true
             }
         );
-        console.log('Row deleted : '+result.rowsAffected);
+        if(result.rowsAffected)r=result.rowsAffected;
+        //console.log('Row deleted : '+result.rowsAffected);
         //if(result.rowsAffected)insertedRowID = result.lastRowid;
     }catch (e)
     {
@@ -105,6 +110,7 @@ deleteLocation = async function(row){
             }
         }
     }
+    return r;
 };
 insertLocation = async function (row) {
     let insertedRowID; //for updating table in ui

@@ -7,10 +7,12 @@ var wModel = require('../../models/wuser.model');
 route.get('/location',function (req,res){
    locationModel.loadAllLocation()
        .then(r=>{
-          if(!res.locals.partials)res.locals.partials = {};
-          res.locals.partials.table = r;
-          res.locals.partials.formData = locationModel.formData;
-          res.render('admin_table',{layout:'admin_layout',title:'LOCATION'})
+           if(r){
+               if(!res.locals.partials)res.locals.partials = {};
+               res.locals.partials.table = r;
+               res.locals.partials.formData = locationModel.formData;
+               res.render('admin_table',{layout:'admin_layout',title:'LOCATION'});
+           }
        })
        .catch(e=>{
             throw e;
@@ -22,20 +24,30 @@ route.post('/location',function (req,res){
    //check validity of data to be modified
    locationModel.insertLocation(req.body)
        .then(r=>{
-           res.json({
-               msg : 'success',
-               index: r
-           });
+           if(r){
+               res.json({
+                   msg : 'success',
+                   index: r
+               });
+           }
+           else {
+               res.json({
+                   msg:'failed',
+               })
+           }
         })
        .catch(e=>{
-      throw e;
-   });
+            throw e;
+        });
 });
 
 route.put('/location',function (req,res){
    locationModel.updateLocation(req.body)
-       .then(()=>{
-            res.send({success:true});
+       .then((r)=>{
+           if(r) {
+               res.send({success: true});
+           }
+           else res.send({success:false});
         })
        .catch(e=>{throw e});
 });
@@ -44,10 +56,18 @@ route.delete('/location',function (req,res){
    //autoCommit is turned off
    //so refreshing the webpage will put back the data
    locationModel.deleteLocation(req.body)
-       .then(()=>{
-           res.json({
-               msg:'success'
-           });
+       .then((r)=>{
+           if(r){
+               res.json({
+                   msg : 'success',
+                   index: r
+               });
+           }
+           else {
+               res.json({
+                   msg:'failed',
+               })
+           }
         })
        .catch(e=>{throw e});
 });
@@ -71,10 +91,17 @@ route.post('/vaccine',function (req,res){
     //check validity of data to be modified
     vaccineModel.insertVaccine(req.body)
         .then(r=>{
-            res.json({
-                msg : 'success',
-                index: r
-            });
+            if(r){
+                res.json({
+                    msg : 'success',
+                    index: r
+                });
+            }
+            else {
+                res.json({
+                    msg:'failed',
+                })
+            }
         })
         .catch(e=>{
             throw e;
@@ -83,8 +110,9 @@ route.post('/vaccine',function (req,res){
 
 route.put('/vaccine',function (req,res){
     vaccineModel.updateVaccine(req.body)
-        .then(()=>{
-            res.send({success:true});
+        .then((r)=>{
+            if(r)res.send({success:true});
+            else res.send({success:false, msg : e});
         })
         .catch(e=>{
             res.send({success:false, msg : e});
@@ -95,11 +123,19 @@ route.put('/vaccine',function (req,res){
 route.delete('/vaccine',function (req,res){
     //autoCommit is turned off
     //so refreshing the webpage will put back the data
-    locationModel.deleteLocation(req.body)
-        .then(()=>{
-            res.json({
-                msg:'success'
-            });
+    vaccineModel.deleteVaccine(req.body)
+        .then((r)=>{
+            if(r){
+                res.json({
+                    msg : 'success',
+                    index: r
+                });
+            }
+            else {
+                res.json({
+                    msg:'failed',
+                })
+            }
         })
         .catch(e=>{throw e});
 });
@@ -108,10 +144,12 @@ route.delete('/vaccine',function (req,res){
 route.get('/whitelist_user',function (req,res){
     wModel.loadAllUser()
         .then(r=>{
-            if(!res.locals.partials)res.locals.partials = {};
-            res.locals.partials.table = r;
-            res.locals.partials.formData = wModel.formData;
-            res.render('admin_table',{layout:'admin_layout',title:'WhiteList'})
+            if(r){
+                if(!res.locals.partials)res.locals.partials = {};
+                res.locals.partials.table = r;
+                res.locals.partials.formData = wModel.formData;
+                res.render('admin_table',{layout:'admin_layout',title:'WhiteList'});
+            }
         })
         .catch(e=>{
             throw e;
@@ -121,10 +159,17 @@ route.get('/whitelist_user',function (req,res){
 route.post('/whitelist_user',function (req,res){
     wModel.insertNewUser(req.body.USER_NAME,req.body.PASSWORD)
         .then(r=>{
-            res.json({
-                msg : 'success',
-                index: r
-            });
+            if(r){
+                res.json({
+                    msg : 'success',
+                    index: r
+                });
+            }
+            else {
+                res.json({
+                    msg:'failed',
+                })
+            }
         })
         .catch(e=>{
             res.json({
@@ -136,8 +181,9 @@ route.post('/whitelist_user',function (req,res){
 
 route.put('/whitelist_user',function (req,res){
     wModel.updateUser(req.body)
-        .then(()=>{
-            res.send({success:true});
+        .then((r)=>{
+            if(r)res.send({success:true});
+            else res.send({success:false});
         })
         .catch(e=>{
             res.send({success:false, msg : e});
