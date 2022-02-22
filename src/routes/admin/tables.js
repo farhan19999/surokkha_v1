@@ -1,6 +1,7 @@
 var route = require('express').Router();
 var locationModel = require('../../models/location.model');
 var vaccineModel = require('../../models/vaccine.model');
+var wModel = require('../../models/wuser.model');
 
 //todo : have to show other table : user, vaccination center, user dosage history
 route.get('/location',function (req,res){
@@ -85,7 +86,10 @@ route.put('/vaccine',function (req,res){
         .then(()=>{
             res.send({success:true});
         })
-        .catch(e=>{throw e});
+        .catch(e=>{
+            res.send({success:false, msg : e});
+            throw e;
+        });
 });
 
 route.delete('/vaccine',function (req,res){
@@ -98,6 +102,47 @@ route.delete('/vaccine',function (req,res){
             });
         })
         .catch(e=>{throw e});
+});
+
+
+route.get('/whitelist_user',function (req,res){
+    wModel.loadAllUser()
+        .then(r=>{
+            if(!res.locals.partials)res.locals.partials = {};
+            res.locals.partials.table = r;
+            res.locals.partials.formData = wModel.formData;
+            res.render('admin_table',{layout:'admin_layout',title:'VACCINE'})
+        })
+        .catch(e=>{
+            throw e;
+        });
+});
+
+route.post('/whitelist_user',function (req,res){
+    wModel.insertNewUser(req.body.USER_NAME,req.body.PASSWORD)
+        .then(r=>{
+            res.json({
+                msg : 'success',
+                index: r
+            });
+        })
+        .catch(e=>{
+            res.json({
+                msg:'failed',
+                error : e
+            })
+        });
+});
+
+route.put('/whitelist_user',function (req,res){
+    wModel.updateUser(req.body)
+        .then(()=>{
+            res.send({success:true});
+        })
+        .catch(e=>{
+            res.send({success:false, msg : e});
+            throw e;
+        });
 });
 
 module.exports = route;

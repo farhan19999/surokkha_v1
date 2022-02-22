@@ -1,6 +1,17 @@
 const config =require('../config/database.config');
 var oracledb = require('oracledb');
 
+
+const formData =
+    [
+        {label:'Institution ID',name:'institution_id',type:'number',prop : 'readonly'},
+        {label:'Institution Name',name:'institution_name',type:'text',prop:''},
+        {label:'Whitelisted Person',name:'whitelisted',type:'number',prop:''},
+        {label:'Currently Registered',name:'currently_registered',type:'number',prop:''},
+        {label:'Password',name:'password',type:'password',prop:''},
+    ];
+
+
 verifyLogin = async function (username, password){
     let wInfo;
     let connection;
@@ -174,8 +185,21 @@ insertNewUser = async function(name,pass){
             `INSERT INTO WUSER (INSTITUTION_NAME,WHITELISTED,CURRENTLY_REGISTERED,PASSWORD,USER_NAME) 
              VALUES (:INSTITUTION_NAME,:WHITELISTED,:CURRENTLY_REGISTERED,:PASSWORD,:USER_NAME)`,
             {INSTITUTION_NAME:name,WHITELISTED:0,CURRENTLY_REGISTERED:0,PASSWORD:'1234',USER_NAME:name},
+            {
+                autoCommit :true
+            }
         );
-        insRows = result.rowsAffected;
+        if(result.rowsAffected){
+            result = await connection.execute(
+                `SELECT INSTITUTION_ID FROM WUSER WHERE USER_NAME = :V`,
+                [name],
+                {
+                    maxRows : 1
+                }
+            )
+            insRows = result.rows[0][0];
+        }
+
     }catch (e) {
         console.log(e);
     }
@@ -191,8 +215,77 @@ insertNewUser = async function(name,pass){
     }
     return insRows;
 };
+
+loadAllUser = async function (){
+  let connection;
+  let table   = [];
+  let metaData = [];
+  try{
+      connection = await oracledb.getConnection(config);
+      let result = await connection.execute(
+        'SELECT * FROM WUSER',
+        [],
+          {
+              resultSet :true,
+              outFormat: oracledb.OUT_FORMAT_OBJECT
+          }
+      );
+      metaData = result.metaData;
+      let row;
+      while((row = await result.resultSet.getRow()))
+      {
+          table.push(row);
+      }
+      //console.log(table);
+      await result.resultSet.close();
+
+  }catch (e){
+      console.log(e);
+  }finally {
+      if(connection) {
+          try{
+              await connection.close();
+          }
+          catch (e){
+              console.log(e);
+          }
+      }
+  }
+  return {tableName:'whitelist_user',tableHead:metaData,tableData:table};
+};
+
+
+updateUser = async function(data){
+    let connection;
+    let affectedRow;
+    try{
+        connection = await oracledb.getConnection(config);
+        let result = await connection.execute(
+            `UPDATE  WUSER  SET INSTITUTION_NAME = :INSTITUTION_NAME , USER_NAME = :USER_NAME, PASSWORD = :PASSWORD where INSTITUTION_ID = :INSTITUTION_ID`,
+            data,
+            {
+                autoCommit :true
+            }
+        );
+        affectedRow = result.rowsAffected;
+    }catch (e){
+        console.log(e);
+    }
+     finally {
+        if(connection) {
+            try{
+                await connection.close();
+            }
+            catch (e){
+                console.log(e);
+            }
+        }
+    }
+    return affectedRow;
+};
+
 run =function () {
-    let objArray = [
+    /*let objArray = [
         {
             INSTITUTION_ID: 1,
             FIRST_NAME: 'Xad',
@@ -210,6 +303,10 @@ run =function () {
         .catch(e=>{
             console.log(e);
         });
+    */
+    //loadAllUser().then(v=>console.log(v)).catch(e=>console.log(e));
+    //insertNewUser('ADG',1234).then(v=>console.log(v)).catch(e=>console.log(e));
+
 };
 //run();
 
@@ -219,5 +316,8 @@ module.exports = {
     insertBcfUser,
     insertNewUser,
     insertManyPerson,
-    getUserInfoById
+    getUserInfoById,
+    loadAllUser,
+    formData,
+    updateUser
 };

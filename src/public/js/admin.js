@@ -39,7 +39,7 @@ insertDataFunc = function (){
             //get new row from msg
             let insertedDataArray = $('#'+formID).serializeArray();
             let tableArray = table.row(0).data();
-            tableArray[0]=0; //TODO: INITIALIZE WITH GETTING NEW ID
+            tableArray[0]=msg.r; //TODO: INITIALIZE WITH GETTING NEW ID
             for(var i = 1;i<tableArray.length ; i++ )tableArray[i] = insertedDataArray[i].value;
             //insert it into table
             table.row.add(tableArray).draw(false);

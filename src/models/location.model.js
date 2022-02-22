@@ -119,11 +119,18 @@ insertLocation = async function (row) {
              (:union_or_ward, :city_or_municipality, :upazilla_or_thana, :district, :division)`,
              data,
              {
-                 //autoCommit : true
+                 autoCommit : true
              }
         );
-        console.log('Row inserted : '+result.rowsAffected);
-        if(result.rowsAffected)insertedRowID = result.lastRowid;
+        if(result.rowsAffected){
+            result = await connection.execute(
+                `SELECT LOCATION_ID FROM LOCATION WHERE DIVISION = :division and DISTRICT = :district and UPAZILLA_OR_THANA = :upazilla_or_thana and CITY_OR_MUNICIPALITY = :city_or_municipality and UNION_OR_WARD = :union_or_ward`,
+                data,
+                {maxRows : 1 }
+                );
+
+            insertedRowID = result.rows[0][0];
+        }
     }catch (e)
     {
         console.log(e);
