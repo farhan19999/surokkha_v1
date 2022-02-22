@@ -140,13 +140,14 @@ afterRowSelectionCompleted = function (btn){
     btn['del'].prop('disabled',true);
 };
 
+
+
 $(document).ready( function () {
     table = $('#table_id').DataTable({select: true});
     btn = {ins: $('#insertButton'), edit: $('#editButton'), del: $('#deleteButton')};
     header = getHeader();
     formID = $('#modalId form').attr('id');
     tableName = $('#table_id caption').text();
-
     $('#modal-save-id').on('click',saveDataFunc);
     $('#modal-insert-id').on('click',insertDataFunc);
     $('#modalId').on('hide.bs.modal',()=>{

@@ -9,6 +9,7 @@ const formData =
         {label:'Whitelisted Person',name:'whitelisted',type:'number',prop:''},
         {label:'Currently Registered',name:'currently_registered',type:'number',prop:''},
         {label:'Password',name:'password',type:'password',prop:''},
+        {label:'User Name',name:'user_name',type:'text',prop:''},
     ];
 
 
@@ -262,7 +263,7 @@ updateUser = async function(data){
         connection = await oracledb.getConnection(config);
         let result = await connection.execute(
             `UPDATE  WUSER  SET INSTITUTION_NAME = :INSTITUTION_NAME , USER_NAME = :USER_NAME, PASSWORD = :PASSWORD where INSTITUTION_ID = :INSTITUTION_ID`,
-            data,
+            {INSTITUTION_NAME : data.institution_name , USER_NAME  :data.user_name, PASSWORD  :data.password,INSTITUTION_ID : data.institution_id},
             {
                 autoCommit :true
             }

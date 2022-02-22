@@ -111,7 +111,7 @@ route.get('/whitelist_user',function (req,res){
             if(!res.locals.partials)res.locals.partials = {};
             res.locals.partials.table = r;
             res.locals.partials.formData = wModel.formData;
-            res.render('admin_table',{layout:'admin_layout',title:'VACCINE'})
+            res.render('admin_table',{layout:'admin_layout',title:'WhiteList'})
         })
         .catch(e=>{
             throw e;
