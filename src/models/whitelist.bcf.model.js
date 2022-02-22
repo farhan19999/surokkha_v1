@@ -9,11 +9,17 @@ verifyPreReg = async function (data)
         connection = await oracledb.getConnection(config);
         let result = await connection.execute
         (
-            `SELECT (FIRST_NAME ||' ' ||LAST_NAME) AS NAME FROM U18_INFO WHERE BIRTH_CERTIFICATE_NO = :bcf AND DATE_OF_BIRTH = to_date(:dob,'yyyy-mm-dd') `,
+            `SELECT FIRST_NAME,LAST_NAME FROM U18_INFO WHERE BIRTH_CERTIFICATE_NO = :bcf AND DATE_OF_BIRTH = to_date(:dob,'yyyy-mm-dd') `,
             data,
-            {maxRows : 1}
+            {
+                maxRows : 1,
+                outFormat: oracledb.OUT_FORMAT_OBJECT
+            }
         );
-        name = result.rows[0][0];
+        if(result.rows[0]){
+            name = result.rows[0];
+        }
+
         //console.log(result.rows[0]);
         //row = locationMap(result.metaData, result.rows[0]);
     }catch (e){console.log(e);}
@@ -29,7 +35,7 @@ run = function (){
     //verifyPreReg({nid:1234567890, dob:'2000-02-01', cat_id : 22}).then(value => {console.log(value)}).catch(e=>console.log(e));
 
 };
-run();
+//run();
 
 module.exports ={
     verifyPreReg

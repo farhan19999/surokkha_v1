@@ -56,8 +56,9 @@ findUser = async function(uid,type,dob,password){
 };
 
 registerUserInDB = async function (user) {
-    let sql = '(FIRST_NAME, LAST_NAME, PHONE_NO, DATE_OF_BIRTH, CATEGORY_ID, EMAIL, CURRENT_ADDRESS, PREFERRED_CENTER, HBP_HD_STR, DIABETICS, KD, RESP, CANCER, PREV_COVID';
-    let sql2 = ` values (:FIRST_NAME, :LAST_NAME, :PHONE_NO, to_date(:DATE_OF_BIRTH,\'yyyy-mm-dd\'), :CATEGORY_ID, :EMAIL, :CURRENT_ADDRESS, :PREFERRED_CENTER, :HBP_HD_STR, :DIABETICS, :KD, :RESP, :CANCER, :PREV_COVID `;
+    let affectedRow;
+    let sql = '(FIRST_NAME, LAST_NAME, PHONE_NO, DATE_OF_BIRTH, CATEGORY_ID, PASSWORD, EMAIL, CURRENT_ADDRESS, PREFERRED_CENTER, HBP_HD_STR, DIABETICS, KD, RESP, CANCER, PREV_COVID';
+    let sql2 = ` values (:FIRST_NAME, :LAST_NAME, :PHONE_NO, to_date(:DATE_OF_BIRTH,\'yyyy-mm-dd\'), :CATEGORY_ID, :PASSWORD, :EMAIL, :CURRENT_ADDRESS, :PREFERRED_CENTER, :HBP_HD_STR, :DIABETICS, :KD, :RESP, :CANCER, :PREV_COVID `;
     let data = {FIRST_NAME : user.fn, LAST_NAME : user.ln, PASSWORD : user.pwd, PHONE_NO : user.ph_num, DATE_OF_BIRTH:user.dob, CATEGORY_ID : user.category_id, EMAIL : user.email, CURRENT_ADDRESS : user.location_id, PREFERRED_CENTER : user.prefCenter, HBP_HD_STR:user.hbp, DIABETICS : user.dbts, KD : user.kd, RESP : user.resp, CANCER: user.cancer, PREV_COVID : user.prev_cov};
     if(user.regType === 'NID')
     {
@@ -79,6 +80,9 @@ registerUserInDB = async function (user) {
             data,
             {autoCommit : true}
         );
+        if(result.rowsAffected){
+            affectedRow = result.rowsAffected;
+        }
         //console.log('result is : ' + result);
         //console.log(`INSERT INTO GUSER`+sql+sql2)
     }catch (e){console.log(e);}
@@ -88,6 +92,7 @@ registerUserInDB = async function (user) {
         }
         catch (e){console.log(e);}
     }
+    return affectedRow;
 }
 
 updateHistory = async (data)=> {
@@ -176,7 +181,28 @@ run = function (){
         .catch(e=>{console.log(e);});
      */
     //findUser(1234567890,'NID','2000-02-01').then(v=>console.log(v)).catch(e=>console.log(e));
-    findUserHistory('1').then(v=>console.log(v));
+    //findUserHistory('1').then(v=>console.log(v));
+    registerUserInDB({
+            regType: 'NID',
+            fn: 'Xad',
+            ln: 'Cas',
+            pwd: '1234',
+            nid: '1234567893',
+            bcf: '',
+            dob: '1994-02-04',
+            ph_num: '01234567891',
+            email: '',
+            hbp: 'no',
+            kd: 'no',
+            resp: 'no',
+            prev_cov: 'no',
+            cancer: 'no',
+            dbts: 'no',
+            prefCenter: '1',
+            location_id: 4,
+            category_id: 22
+        }
+    ).then(v=>{console.log(v)}).catch(e=>console.log(e));
 };
 //run();
 

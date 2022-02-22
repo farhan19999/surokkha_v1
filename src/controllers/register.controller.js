@@ -12,7 +12,10 @@ verification = function (req,res,next){
         data.nid = req.body.nid;
         let category ={};
         category.sector_id = req.body.sector_id;
-        if(req.body.sub_sector_id)category.sub_sector_id = req.body.sub_sector_id;
+        if(req.body.sub_sector_id )
+        {
+            if(req.body.sub_sector_id !== '0')category.sub_sector_id = req.body.sub_sector_id;
+        }
         userModel.findUser(data.nid,'NID',data.dob,'')
             .then(value => {
                 if(value){
@@ -42,11 +45,10 @@ verification = function (req,res,next){
                 console.log('Error in finding user');
                 console.log(e);
             });
-
     }
     else if(req.body.regMethod === '2'){
         data.bcf  = req.body.bcf;
-        userModel.findUser(data.nid,'NID',data.dob,'')
+        userModel.findUser(data.nid,'BCF',data.dob,'')
             .then(value => {
                 if(value){
                     req.body.verified = 2;
@@ -83,9 +85,16 @@ registerUser = function (req,res,next) {
         .then(id=>{
             user.location_id = id;
             //console.log('found location id : ' + id);
+            if(req.body.regType === 2){
+                user.category_id = 99;
+                next();
+            }
             let category ={};
             category.sector_id = req.body.sector_id;
-            if(req.body.sub_sector_id)category.sub_sector_id = req.body.sub_sector_id;
+            if(req.body.sub_sector_id)
+            {
+                if(req.body.sub_sector_id !== '0')category.sub_sector_id = req.body.sub_sector_id;
+            }
             user.category_id = categoryModel.findCategoryId(category)
                 .then(v=>{
                     //console.log('found category id :' + v);

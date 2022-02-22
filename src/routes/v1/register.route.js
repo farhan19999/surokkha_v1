@@ -34,12 +34,14 @@ router.post('/s/1',function (req,res){
 });
 router.post('/s/2',controller.registerUser,function (req,res){
     //register user
-    console.log(req.body.user);
+    //console.log(req.body.user);
     userModel.registerUserInDB(req.body.user)
         .then(v=>{
-            res.send({success:true});
+            if(v)res.send({success:true});
+            else res.send({success:false,msg:'Couldn\'t Register '});
         })
         .catch(e=>{
+            res.send({success:false,msg:'Couldn\'t Register '});
             throw e;
         });
 })

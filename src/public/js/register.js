@@ -112,6 +112,35 @@ getSubCategory= function (){
     }
 };
 
+verifyData = function (){
+    var nid = $('#nid').val();
+    var dob = $('#dob').val();
+    var bcf = $('#bcf').val();
+    if(nid ==='' && bcf === '')
+    {
+        if(regMethod === 1)alert('Enter NID');
+        else alert('Enter Birth Certificate No');
+        return false;
+    }
+    else {
+        if(regMethod === 1){
+            if(nid.length !== 10)
+            {
+                alert('NID should of 10 digit');
+                return false;
+            }
+        }
+        if(regMethod === 2)
+        {
+            if(bcf.length !== 17)
+            {
+                alert('Birth certificate should of 17 digit');
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 verify = function (event){
     //TODO : complete THIS FUNCTION WITH BACKEND
@@ -120,6 +149,7 @@ verify = function (event){
     var bcf = $('#bcf').val();
     if(nid==='')nid= 'null';
     if(bcf==='')bcf= 'null';
+    if(verifyData() === false)return;
     data = {regMethod:regMethod, nid:nid, bcf:bcf,dob:dob, sector_id : categoryValue, sub_sector_id : subCategoryValue }
     $.ajax({
         type:'post',

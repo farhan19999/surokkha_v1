@@ -86,7 +86,7 @@
                         </div>
                         <div id="dobCol"class="column-element" hidden>
                             <h5>Date of Birth :</h5>
-                            <input type="date" id="dob" name="dob">
+                            <input type="date" id="dob" name="dob" required>
                             <button class="btn-primary" type="button" id="step1btn" >Verify</button>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         <div class="column-element" style="width: 300px;">
                             <h5>Mobile Number :</h5>
                             <input type="number" id="mobile-number" name="mobile-number" class="form-control"
-                                   placeholder="Example - 01700000000" maxlength="11" autocomplete="off">
+                                   placeholder="Example - 01700000000" maxlength="11" required>
                         </div>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                             <h5>Password :</h5>
                         </label>
                         <input type="password" id="pwd" name="pwd" class="form-control"
-                               placeholder="Enter a valid password">
+                               placeholder="Enter a valid password" required>
                     </div>
                 </div>
             </div>
@@ -298,7 +298,7 @@
     <hr>
     <section class="necessary-info" style="margin-top: 40px; margin-bottom: 70px;">
         <h3 style="padding-bottom: 20px; padding-left: 70px; color: rgb(255, 51, 0);">
-            Present Adress
+            Present Adress(Required for selecting vaccination center)
         </h3>
 
         <div class="container">
@@ -308,7 +308,7 @@
                         <div style="width: 250px; padding-bottom: 20px;">
                             <h5>Division :</h5>
                             <select id="selectDivId" class="form-select" style="width: 300px;">
-                                <option selected value="">--Select--</option>
+                                <option disabled selected value="">--Select--</option>
                                 {{#each division}}
                                     <option value="{{DIVISION}}">{{DIVISION}}</option>
                                 {{/each}}
@@ -321,7 +321,7 @@
                         <div style="width: 250px; padding-bottom: 20px;">
                             <h5>District :</h5>
                             <select id="selectDistId" class="form-select" style="width: 300px;">
-                                <option selected value="">--Select--</option>
+                                <option disabled selected value="">--Select--</option>
                             </select>
                         </div>
                     </div>
@@ -331,7 +331,7 @@
                         <div style="width: 250px;">
                             <h5>Upazilla / Thana :</h5>
                             <select id="selectUtId" class="form-select" style="width: 300px;">
-                                    <option selected value="">--Select--</option>
+                                    <option disabled selected value="">--Select--</option>
                                 </select>
                         </div>
                     </div>
@@ -343,7 +343,7 @@
                         <div style="width: 250px; padding-bottom: 20px;">
                             <h5>City/Municipality :</h5>
                             <select id="selectCityMunId" class="form-select" style="width: 300px;">
-                                <option selected value="">--Select--</option>
+                                <option disabled selected value="">--Select--</option>
                             </select>
                         </div>
                     </div>
@@ -353,7 +353,7 @@
                         <div style="width: 250px; padding-bottom: 20px;">
                             <h5>Union/Ward :</h5>
                             <select id="selectUnwId" class="form-select" style="width: 300px;">
-                                <option selected value="">--Select--</option>
+                                <option disabled selected value="">--Select--</option>
                             </select>
                         </div>
                     </div>
@@ -373,7 +373,7 @@
             <div class="column-element">
                 <h5>Select Center :</h5>
                 <select id="selectCenterId" class="form-select" style="width: 300px;">
-                    <option selected value="">--Select--</option>
+                    <option disabled selected value="">--Select--</option>
                 </select>
             </div>
         </div>
@@ -383,19 +383,20 @@
     </section>
     <hr>
     <section class="vaccine-location" style="margin-top: 40px; margin-bottom: 70px;">
-        <div class="form-check" style="padding-left: 75px;">
+
+       <!-- <div class="form-check" style="padding-left: 75px;">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
                 <h6>
                     I hereby declare that the information provided is true and correct.
                 </h6>
             </label>
-        </div>
+        </div>-->
 
         <div class="container" style="padding-top: 35px; display: flex; justify-content: center;">
             <div class="row">
                 <div class="col">
-                    <button id="discardBtn" type="button" class="btn btn-light" style="margin-right: 15px;">Discard</button>
+                    <!--<button id="discardBtn" type="button" class="btn btn-light" style="margin-right: 15px;">Discard</button>-->
                     <button id="successBtn" type="button" class="btn btn-success">Confirm</button>
                 </div>
             </div>

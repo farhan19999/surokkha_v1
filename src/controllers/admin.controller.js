@@ -10,7 +10,6 @@ router.get('/',function (req,res){
     }
 });
 router.post('/', function (req,res){
-    console.log(req.body);
     if(req.session.authenticated)
     {
         res.redirect('/');

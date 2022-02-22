@@ -13,7 +13,7 @@ loadCenter = function (district,ut){
 
 setCenters = function (data)
 {
-    $('#selectCenterId').empty().append('<option selected value="">--Select--</option>');
+    $('#selectCenterId').empty().append('<option selected disabled value="">--Select--</option>');
     var str = showCenter({center:data}).split('\n');
     str.forEach(s=>{
         $('#selectCenterId').append(s);
@@ -22,14 +22,25 @@ setCenters = function (data)
 getStep1Data = function (){
     return {nid : $('#nid').val(), bcf : $('#bcf').val(), dob : $('#dob').val(),sector_id : $('#selectCategoryId option:selected').val(), sub_sector_id:  $('#selectSubCategoryId option:selected').val()}
 }
+
+checkValidData = function (){
+    if($('#mobile-number').val().length !== 11)
+    {
+        alert('Not a valid phone Number');
+        return false;
+    }
+    return true;
+}
+
 register = function (event){
     //get all data
+    if(checkValidData()===false)return;
     var regType = $('#regMethodId option:selected').val();
     var fn = $('#reg-name').val().split(' ')[0];
     var ln = $('#reg-name').val().split(' ')[1];
     var pwd = $('#pwd').val();
     var {nid, bcf ,dob, sector_id, sub_sector_id} = getStep1Data(); //get them from hidden element
-    var ph_num = $('#mobile-number').val();
+    var ph_num = '88'+$('#mobile-number').val();
     var email = $('#mail-id').val();
     var hbp = $('input[name=hbp]:checked').val();
     var kd = $('input[name=kd]:checked').val();
@@ -49,8 +60,13 @@ register = function (event){
         url:'/v1/registration/s/2/',
         data: formData,
         success : function (value){
-            alert('successfully registered');
-            //window.location.href = '/v1/home'
+            if(value.success === true ){
+                alert('successfully registered');
+                window.location.href = '/v1/home';
+            }
+            else {
+                alert(value.msg);
+            }
         }
     });
 };
@@ -58,28 +74,28 @@ resetLocation = function (type, data){
     var str = showLocation({location:data}).split('\n');
     if(type==='dis')
     {
-        $('#selectDistId').empty().append('<option selected value="">--Select--</option>')
+        $('#selectDistId').empty().append('<option selected disabled value="">--Select--</option>')
         str.forEach(s=>{
            $('#selectDistId').append(s);
         });
     }
     else if(type==='uT')
     {
-        $('#selectUtId').empty().append('<option selected value="">--Select--</option>')
+        $('#selectUtId').empty().append('<option selected disabled value="">--Select--</option>')
         str.forEach(s=>{
             $('#selectUtId').append(s);
         });
     }
     else if(type==='cityMun')
     {
-        $('#selectCityMunId').empty().append('<option selected value="">--Select--</option>')
+        $('#selectCityMunId').empty().append('<option selected disabled value="">--Select--</option>')
         str.forEach(s=>{
             $('#selectCityMunId').append(s);
         });
     }
     else if(type==='unw')
     {
-        $('#selectUnwId').empty().append('<option selected value="">--Select--</option>')
+        $('#selectUnwId').empty().append('<option selected disabled value="">--Select--</option>')
         str.forEach(s=>{
             $('#selectUnwId').append(s);
         });
@@ -153,7 +169,7 @@ setDistrict = function (event)
 setUT = function (event)
 {
     clearCityMun();
-    $('#selectCenterId').empty().append('<option selected value="">--Select--</option>');
+    $('#selectCenterId').empty().append('<option selected disabled value="">--Select--</option>');
     if($('#selectUtId option:selected').val() !== ''){
         fetchLocation('cityMun');
         loadCenter($('#selectDistId option:selected').val(),$('#selectUtId option:selected').val());
@@ -170,22 +186,22 @@ setCityMun = function (event)
 
 clearDis = function ()
 {
-    $('#selectDistId option').empty().append('<option selected value="">--Select--</option>');
+    $('#selectDistId option').empty().append('<option disabled selected value="">--Select--</option>');
     clearUT();
 }
 clearUT = function ()
 {
-    $('#selectUtId option').empty().append('<option selected value="">--Select--</option>');
+    $('#selectUtId option').empty().append('<option disabled selected value="">--Select--</option>');
     clearCityMun();
 }
 
 clearCityMun = function (){
-    $('#selectCityMunId option').empty().append('<option selected value="">--Select--</option>');
+    $('#selectCityMunId option').empty().append('<option disabled selected value="">--Select--</option>');
     clearUnw();
 }
 
 clearUnw = function(){
-  $('#selectUnwId option').empty().append('<option selected value="">--Select--</option>');
+  $('#selectUnwId option').empty().append('<option disabled selected value="">--Select--</option>');
 };
 $('document').ready(function (){
     var centerTemp = $('#centerT').html();

@@ -148,20 +148,22 @@ findCategoryId = async function(data){
                 maxRows : 1
             }
         );
-        id = result.rows[0][0];
+        if(result.rows[0]){
+            id = result.rows[0][0];
+        }
     }catch (e) {
-        console.log('Error in finding category id...');
+        console.log(`Error in finding category id... ${JSON.stringify(data)}`);
         console.log(e);
     }
     finally {
         if(connection) {
-        try{
+            try{
             await connection.close();
         }
-        catch (e){
+            catch (e){
             console.log(e);
         }
-    }
+        }
     }
     return id;
 }
