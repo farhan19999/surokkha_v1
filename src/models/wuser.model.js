@@ -49,7 +49,7 @@ insertNidUser = async function(i_id,nid,dob,fname,lname,category_id){
         let result = await connection.execute
         (
             `INSERT INTO AFFILIATION (INSTITUTION_ID, FIRST_NAME, LAST_NAME, NID_NO, DATE_OF_BIRTH, CATEGORY_ID)
-             values (:INSTITUTION_ID, :FIRST_NAME, :LAST_NAME, :NID_NO, to_date(:DATE_OF_BIRTH,'yyyy-mm-dd'), :CATEGORY_ID)`,
+             values (:INSTITUTION_ID, :FIRST_NAME, :LAST_NAME, :NID_NO, to_date(:DATE_OF_BIRTH,\'yyyy-mm-dd\'), :CATEGORY_ID)`,
             {INSTITUTION_ID:i_id, FIRST_NAME:fname, LAST_NAME:lname, NID_NO:nid, DATE_OF_BIRTH:dob, CATEGORY_ID:category_id},
             {autoCommit:true}
         );
@@ -286,7 +286,7 @@ updateUser = async function(data){
 };
 
 run =function () {
-    /*let objArray = [
+    let objArray = [
         {
             INSTITUTION_ID: 1,
             FIRST_NAME: 'Xad',
@@ -296,7 +296,7 @@ run =function () {
             CATEGORY_ID: 22
         }
     ];
-
+    /*
     insertManyPerson('NID',objArray)
         .then(v=>{
             console.log(v);

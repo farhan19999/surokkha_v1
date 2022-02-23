@@ -22,8 +22,9 @@ app.post('/process_nid',function (req,res){
     if(req.body.sub_sector_id)data.sub_sector_id = req.body.sub_sector_id;
     categoryModel.findCategoryId(data)
         .then(id=>{
-           wModel.insertNidUser(req.session.i_id,nid,dob,fname,lname,id).then(value => {
-               if(value === 1){
+           wModel.insertNidUser(req.session.i_id,nid,dob,fname,lname,id)
+               .then(value => {
+                    if(value === 1){
                    res.send({success:true});
                }
                else res.send({success:false, message : ''});

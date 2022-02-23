@@ -61,10 +61,11 @@ resetSubCategory = function(){
 
 formSubmitAction = function (event){
     event.preventDefault();
-    let data = $('entryFormId').serialize();
+    let data = $('#entryFormId').serializeArray();
     let url = '/white/entry/';
-    if(data.regType === 'NID')url += 'process_nid';
+    if($('#regType option:selected').val() === 'NID')url += 'process_nid';
     else url += 'process_bcf';
+
     $.ajax({
        url : url,
        data : data,
@@ -72,11 +73,12 @@ formSubmitAction = function (event){
        success : function (ret){
           if(ret.success === true){
               alert('Entry Successful');
+              window.location.href = '/white/entry';
           }
           else {
               alert('Entry Unsuccessful');
           }
-          window.location.href = '/white/entry';
+          //window.location.href = '/white/entry';
        }
     });
 };
