@@ -27,7 +27,7 @@ route.post('/location',function (req,res){
            if(r){
                res.json({
                    msg : 'success',
-                   index: r
+                   r: r
                });
            }
            else {
@@ -94,7 +94,7 @@ route.post('/vaccine',function (req,res){
             if(r){
                 res.json({
                     msg : 'success',
-                    index: r
+                    r: r
                 });
             }
             else {
@@ -128,7 +128,7 @@ route.delete('/vaccine',function (req,res){
             if(r){
                 res.json({
                     msg : 'success',
-                    index: r
+                    r: r
                 });
             }
             else {
@@ -157,12 +157,13 @@ route.get('/whitelist_user',function (req,res){
 });
 
 route.post('/whitelist_user',function (req,res){
-    wModel.insertNewUser(req.body.USER_NAME,req.body.PASSWORD)
+    console.log(req.body);
+    wModel.insertNewUser(req.body.user_name,req.body.password)
         .then(r=>{
             if(r){
                 res.json({
                     msg : 'success',
-                    index: r
+                    r: r
                 });
             }
             else {
