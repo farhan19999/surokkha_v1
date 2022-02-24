@@ -90,7 +90,7 @@ deleteLocation = async function(row){
         (   `DELETE FROM LOCATION WHERE LOCATION_ID = :location_id`,
             data,
             {
-                //autoCommit:true
+                autoCommit:true
             }
         );
         if(result.rowsAffected)r=result.rowsAffected;
@@ -130,12 +130,12 @@ insertLocation = async function (row) {
         );
         if(result.rowsAffected){
             result = await connection.execute(
-                `SELECT LOCATION_ID FROM LOCATION WHERE DIVISION = :division and DISTRICT = :district and UPAZILLA_OR_THANA = :upazilla_or_thana and CITY_OR_MUNICIPALITY = :city_or_municipality and UNION_OR_WARD = :union_or_ward`,
-                data,
+                `SELECT max(LOCATION_ID) FROM LOCATION `,
+                [],
                 {maxRows : 1 }
                 );
-
-            insertedRowID = result.rows[0][0];
+            //console.log(result);
+            if(result.rows[0])insertedRowID = result.rows[0][0];
         }
     }catch (e)
     {

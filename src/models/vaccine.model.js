@@ -159,12 +159,13 @@ insertVaccine = async function (row) {
         shelf_life:row.shelf_life,
         stock:row.stock
     };
+    //console.log(data);
 
     try{
         connection = await oracledb.getConnection(config);
         let result = await connection.execute
         (   `INSERT INTO VACCINE 
-             (vaccine_name, manufacturer, shelf_life, stock)   
+             (VACCINE_NAME, MANUFACTURER, SHELF_LIFE, STOCK)   
              values 
              (:vaccine_name, :manufacturer, :shelf_life, :stock)`,
             data,
@@ -172,16 +173,17 @@ insertVaccine = async function (row) {
                 autoCommit : true
             }
         );
-        console.log('Row inserted : '+result.rowsAffected);
+        //console.log('Row inserted : '+result.rowsAffected);
         if(result.rowsAffected){
             result = await connection.execute
             (   `SELECT VACCINE_ID FROM VACCINE WHERE VACCINE_NAME = :vaccine_name`,
-                data,
+                [data.vaccine_name],
                 {
                     maxRows :1,
                     outFormat: oracledb.OUT_FORMAT_OBJECT
                 }
             );
+            //console.log(result);
             if(result.rows[0])insertedRowID = result.rows[0].VACCINE_ID;
         }
     }catch (e)
