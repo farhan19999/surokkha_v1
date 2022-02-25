@@ -113,11 +113,11 @@ insertManyPerson = async function(type,objArray){
     let sql= `INSERT INTO`;
     if(type === 'NID'){
         sql +=` AFFILIATION (INSTITUTION_ID, FIRST_NAME, LAST_NAME, NID_NO, DATE_OF_BIRTH, CATEGORY_ID) values (:INSTITUTION_ID, :FIRST_NAME, :LAST_NAME, :NID_NO, to_date(:DATE_OF_BIRTH,\'mm/dd/yyyy\'), :CATEGORY_ID)`;
-        bindDefs.NID_NO = {type:oracledb.NUMBER};
+        //bindDefs.NID_NO = {type:oracledb.NUMBER};
     }
     else {
-        sql +=` U18_INFO (INSTITUTION_ID, FIRST_NAME, LAST_NAME, BIRTH_CERTIFICATE_NO, DATE_OF_BIRTH, CATEGORY_ID) values (:INSTITUTION_ID, \':FIRST_NAME\', \':LAST_NAME\', :BIRTH_CERTIFICATE_NO, to_date(:DATE_OF_BIRTH,\'mm/dd/yyyy\'), :CATEGORY_ID)`;
-        bindDefs.BIRTH_CERTIFICATE_NO = {type:oracledb.NUMBER};
+        sql +=` U18_INFO (INSTITUTION_ID, FIRST_NAME, LAST_NAME, BIRTH_CERTIFICATE_NO, DATE_OF_BIRTH) values (:INSTITUTION_ID, :FIRST_NAME, :LAST_NAME, :BIRTH_CERTIFICATE_NO, to_date(:DATE_OF_BIRTH,\'mm/dd/yyyy\'))`;
+        //bindDefs.BIRTH_CERTIFICATE_NO = {type:oracledb.NUMBER};
     }
     console.log(sql);
     console.log(objArray);

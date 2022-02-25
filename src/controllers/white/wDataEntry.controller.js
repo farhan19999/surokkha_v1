@@ -71,12 +71,32 @@ app.post('/process_bcf',function (req,res){
 app.post('/process_csv/:type',upload.single('wDataFile'),function (req,res){
     //req.file has the file name
     //console.log(`file name ${JSON.stringify(req.file)}`);
-    if(req.params.type === 'NID'){
-        csvFileHandler.asyncWhiteReadData(req.session.i_id,req.file.filename,req.params.type)
-            .then(value => {
-                csvFileHandler.processInstDataRow(value)
-                .then(v=>{
-                    wModel.insertManyPerson(req.params.type,v)
+    if(req.session.authenticated){
+        if(req.params.type === 'NID'){
+            csvFileHandler.asyncWhiteReadData(req.session.i_id,req.file.filename,req.params.type)
+                .then(value => {
+                    csvFileHandler.processInstDataRow(value)
+                        .then(v=>{
+                            wModel.insertManyPerson(req.params.type,v)
+                                .then(v2=>{
+                                    res.send({success:true, msg:`${v2} rows inserted`});
+                                })
+                                .catch(e=>{
+                                    throw e;
+                                });
+                        })
+                        .catch(e=>{
+                            throw e;
+                        });
+                })
+                .catch(e=>{
+                    res.send({success:false,msg:'Wrong Data format'});
+                });
+        }
+        else {
+            csvFileHandler.asyncWhiteReadData(req.session.i_id,req.file.filename,req.params.type)
+                .then(value => {
+                    wModel.insertManyPerson(req.params.type,value)
                         .then(v2=>{
                             res.send({success:true, msg:`${v2} rows inserted`});
                         })
@@ -85,28 +105,15 @@ app.post('/process_csv/:type',upload.single('wDataFile'),function (req,res){
                         });
                 })
                 .catch(e=>{
-                    throw e;
+                    console.log(e);
+                    res.send({success:false,msg:'Wrong Data format'});
                 });
-            })
-            .catch(e=>{
-                res.send({success:false,msg:'Wrong Data format'});
-            });
+        }
     }
-    else {
-        csvFileHandler.asyncWhiteReadData(req.session.i_id,req.file.filename,req.params.type)
-            .then(value => {
-                wModel.insertManyPerson(req.params.type,v)
-                    .then(v2=>{
-                        res.send({success:true, msg:`${v2} rows inserted`});
-                    })
-                    .catch(e=>{
-                        throw e;
-                    });
-            })
-            .catch(e=>{
-                res.send({success:false,msg:'Wrong Data format'});
-            });
+    else{
+        res.redirect('/white/login');
     }
+
 });
 
 module.exports = app;

@@ -68,7 +68,7 @@ asyncWhiteReadData = async function (i_id,filename,type) {
                 .on('error', error => reject(error))
                 .on('data',row=>{
                     row.INSTITUTION_ID = i_id;
-                    if(type === 'BCF')row.CATEGORY_ID = 99;
+                    //if(type === 'BCF')row.CATEGORY_ID = 99;
                     objArray.push(row);
                 })
                 .on('end', rowCount => {
