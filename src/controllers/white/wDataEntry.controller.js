@@ -6,49 +6,66 @@ const multer = require('multer');
 const upload = multer({dest:'src/public/uploads/white/'});
 
 app.get('/',function (req,res){
-    categoryModel.loadAllCategory()
-        .then(v=>{
-            res.render('wDataEntry',{layout:'w_layout',category:v.sector});
-        })
-        .catch(e=>{
-            throw e;
-        });
+    if(req.session.authenticated){
+        categoryModel.loadAllCategory()
+            .then(v=>{
+                res.render('wDataEntry',{layout:'w_layout',category:v.sector});
+            })
+            .catch(e=>{
+                throw e;
+            });
+    }
+    else{
+        res.redirect('/white/login');
+    }
+
 });
 
 app.post('/process_nid',function (req,res){
+    if(req.session.authenticated){
+        let {nid, dob, fname, lname, sector_id} = req.body;
+        let data = {sector_id : sector_id};
+        if(req.body.sub_sector_id)data.sub_sector_id = req.body.sub_sector_id;
+        categoryModel.findCategoryId(data)
+            .then(id=>{
+                wModel.insertNidUser(req.session.i_id,nid,dob,fname,lname,id)
+                    .then(value => {
+                        if(value === 1){
+                            res.send({success:true});
+                        }
+                        else res.send({success:false, message : ''});
+                    });
+            })
+            .catch(e=>{
+                console.log(e);
+                throw e;
+            });
+    }
+    else{
+        res.redirect('/white/login');
+    }
 
-    let {nid, dob, fname, lname, sector_id} = req.body;
-    let data = {sector_id : sector_id};
-    if(req.body.sub_sector_id)data.sub_sector_id = req.body.sub_sector_id;
-    categoryModel.findCategoryId(data)
-        .then(id=>{
-           wModel.insertNidUser(req.session.i_id,nid,dob,fname,lname,id)
-               .then(value => {
-                    if(value === 1){
-                   res.send({success:true});
-               }
-               else res.send({success:false, message : ''});
-           });
-       })
-        .catch(e=>{
-            console.log(e);
-            throw e;
-       });
 });
 
 app.post('/process_bcf',function (req,res){
-    let {nid, dob, fname, lname} = req.body;
-    wModel.insertBcfUser(req.session.i_id,nid,dob,fname,lname)
-        .then(value => {
+    if(req.session.authenticated){
+        let {bcf, dob, fname, lname} = req.body;
+
+        wModel.insertBcfUser(req.session.i_id,bcf,dob,fname,lname)
+            .then(value => {
                 if(value === 1){
                     res.send({success:true});
                 }
                 else res.send({success:false, message : ''});
             })
-        .catch(e=>{
-            console.log(e);
-            throw e;
-        });
+            .catch(e=>{
+                console.log(e);
+                throw e;
+            });
+    }
+    else{
+        res.redirect('/white/login');
+    }
 });
 
 app.post('/process_csv/:type',upload.single('wDataFile'),function (req,res){

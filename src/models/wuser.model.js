@@ -77,9 +77,9 @@ insertBcfUser = async function(i_id,bcf,dob,fname,lname){
         connection = await oracledb.getConnection(config);
         let result = await connection.execute
         (
-            `INSERT INTO U18_INFO (INSTITUTION_ID, FIRST_NAME, LAST_NAME, BIRTH_CERTIFICATE_NO, DATE_OF_BIRTH, CATEGORY_ID)
-             values (:INSTITUTION_ID, :FIRST_NAME, :LAST_NAME, :BIRTH_CERTIFICATE_NO, to_date(:DATE_OF_BIRTH,'yyyy-mm-dd'), :CATEGORY_ID)`,
-            {INSTITUTION_ID:i_id, FIRST_NAME:fname, LAST_NAME:lname, BIRTH_CERTIFICATE_NO:bcf, DATE_OF_BIRTH:dob, CATEGORY_ID:99 },
+            `INSERT INTO U18_INFO (INSTITUTION_ID, FIRST_NAME, LAST_NAME, BIRTH_CERTIFICATE_NO, DATE_OF_BIRTH)
+             values (:INSTITUTION_ID, :FIRST_NAME, :LAST_NAME, :BIRTH_CERTIFICATE_NO, to_date(:DATE_OF_BIRTH,\'yyyy-mm-dd\'))`,
+            {INSTITUTION_ID:i_id, FIRST_NAME:fname, LAST_NAME:lname, BIRTH_CERTIFICATE_NO:bcf, DATE_OF_BIRTH:dob},
             {autoCommit:true}
         );
         insRows = result.rowsAffected;
