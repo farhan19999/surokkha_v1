@@ -119,8 +119,8 @@ insertManyPerson = async function(type,objArray){
         sql +=` U18_INFO (INSTITUTION_ID, FIRST_NAME, LAST_NAME, BIRTH_CERTIFICATE_NO, DATE_OF_BIRTH) values (:INSTITUTION_ID, :FIRST_NAME, :LAST_NAME, :BIRTH_CERTIFICATE_NO, to_date(:DATE_OF_BIRTH,\'mm/dd/yyyy\'))`;
         //bindDefs.BIRTH_CERTIFICATE_NO = {type:oracledb.NUMBER};
     }
-    console.log(sql);
-    console.log(objArray);
+    //console.log(sql);
+    //console.log(objArray);
     try{
         connection = await oracledb.getConnection(config);
         let result;
