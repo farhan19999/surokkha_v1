@@ -1,66 +1,153 @@
 # Surookha_v1
 
-A mirror web application of countrywide  vaccination system [Surokkha](https://www.surokkha.gov.bd) using ORACLE DATABASE SYSTEM.
+A mirror web application of countrywide  vaccination system [Surokkha](https://www.surokkha.gov.bd) using ORACLE Database Management System(19c).
+
 
 ---
-## Requirements
+## Languages and Tools
 
-For development, you will only need Node.js and a node global package, Yarn, installed in your environement.
+<ul>
+  <li>Node.js</li>
+  <li>OracleDB</li>
+  <li>Bootstrap</li>
+  <li>JQuery</li>
+</ul>
 
-### Node
-- #### Node installation on Windows
 
-  Just go on [official Node.js website](https://nodejs.org/) and download the installer.
-  Also, be sure to have `git` available in your PATH, `npm` might need it (You can find git [here](https://git-scm.com/)).
+<br/>
 
-- #### Node installation on Ubuntu
+## Prerequisites
 
-  You can install nodejs and npm easily with apt install, just run the following commands.
+**`Oracle`**: As this is primarily an Oracle Database Project, Oracle has to be installed in your system. To install Oracle 19c, follow these steps.
+<ol>
+  <li>Go <a href="http://www.oracle.com/index.html">here</a> and register for an account of your own.</li>
+  <li>Then go <a href="https://www.oracle.com/database/technologies/oracle-database-software-downloads.html">here</a> and install the file according to your system.</li>
+  <li>After downloading the ZIP file, UNZIP it and Run setup.exe</li>
+  <li>Install properly.</li>
+</ol>
+<br/>
 
-      $ sudo apt install nodejs
-      $ sudo apt install npm
+**`Node.js`**: For this project, you will also need Node.js. Install Node.js from [here](https://nodejs.org/en/download/)
 
-- #### Other Operating Systems
-  You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
 
-If the installation was successful, you should be able to run the following command.
 
-    $ node --version
-    v8.11.3
+<br/> 
 
-    $ npm --version
-    6.1.0
+## Installing The Project
 
-If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
+Follow the steps below to properly install this project.
 
-    $ npm install npm -g
 
-###
-### Yarn installation
-After installing node, this project will need yarn too, so just run the following command.
+<br/>
 
-      $ npm install -g yarn
 
----
+### Downloading The Project
 
-## Install
+<ol>
+  <li>First, download the <a href="https://github.com/farhan19999/surokkha_v1/archive/refs/heads/master.zip">project</a> as a ZIP file from github into your PC</li>
+  <li>Then UNZIP it</li>
+</ol>
+    OR
+<ol>
+    <li>Goto your project directory.</li>
+    <li>Run the following command.</li>
 
-    $ git clone https://github.com/farhan19999/surookha_v1
-    $ cd surookha_v1
-    $ yarn install
+```sh
+    git clone https://github.com/farhan19999/surokkha_v1;
+```
+<br/>
+</ol>
 
-## Configure app
 
-Open `a/nice/path/to/a.file` then edit it with your settings. You will need:
+### Setting Up The Database
 
-- A setting;
-- Another setting;
-- One more setting;
+<ol>
+  <li>Go to SQL Plus</li>
+  <li>Enter proper user-name and password to login</li>
+  <li>Then run command<br/><br/>
 
-## Running the project
+   ```sh
+   SQL> connect sys as sysdba
+   Enter password: password
+   ```
 
-    $ yarn start
+</li>
+<li>Create a new user. <br/><br/>
 
-## Simple build for production
+	SQL> create user c##{YOUR_USER_NAME} identified by {YOUR_PASSWORD};
+	SQL> grant all privileges to c##{YOUR_USER_NAME};
 
-    $ yarn build
+</li>
+<li>Now connect to c##{YOUR_USER_NAME}<br/><br/>
+
+	SQL> connect c##{YOUR_USER_NAME}
+	Enter password: {YOUR_PASSWORD}
+
+</li>
+<li>Run the 'TESTDB1.sql' file from 'sql_dump' folder (/{your project dir}/surookha_v1/sql_dump)<br/><br/>
+
+   ```sh
+   SQL> @[path]
+   ```
+
+In the place of `[path]` you will have to provide the path of `TESTDB1.sql` in your PC.<br/>
+
+</li>
+</ol>
+<br/>
+
+
+
+### Environment setup
+<ol>
+    <li>First goto the project folder.</li>
+    <li>Then goto   /{your project dir}/surookha_v1/src/config</li>
+    <li>Then open database.config.js</li>
+</ol>
+
+
+```sh
+    const demo_info = {
+    user : {your database user name},
+    password : {your database password},
+    connectionString : {your database connectionString}
+    };
+```
+You will have to insert proper values in places of
+<ul>
+  <li>DATABASE_USER_NAME</li>
+  <li>DATABASE_USER_PASSWORD</li>
+  <li>DATABASE_CONNECTION_STRING</li>
+</ul>
+<br/>
+
+### Installing NPM Packages
+
+Open cmd and go to the client folder in cmd and run the command
+
+```sh
+ npm install
+```
+
+<br/>
+
+### Running The Project
+
+Open cmd and go to the project folder in cmd and run the command
+
+```sh
+ npm start
+```
+
+<br/>
+
+## Creators of This Project
+
+- [**Md. Farhan Mahtab**](https://github.com/farhan19999) - 1805096
+
+- [**Shahriar Ferdous**](https://github.com/Shahriar-Ferdoush) - 18050101
+
+## Disclaimer
+
+This project is inspired by [Surokkha](https://www.surokkha.gov.bd).
+Created only for educational purpose.
