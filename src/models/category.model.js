@@ -138,7 +138,10 @@ findCategoryId = async function(data){
     let connection;
     let id;
     var sql = `SELECT CATEGORY_ID FROM CATEGORY WHERE SECTOR_ID = ${data.sector_id}`;
-    if(data.sub_sector_id)sql+=` AND SUB_SECTOR_ID = ${data.sub_sector_id}`;
+    if(data.sub_sector_id)
+    {
+        if(data.sub_sector_id !== '0' && data.sub_sector_id !== 0)sql+=` AND SUB_SECTOR_ID = ${data.sub_sector_id}`;
+    }
     try{
         connection = await oracledb.getConnection(config);
         let result = await connection.execute(

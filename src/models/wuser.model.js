@@ -44,6 +44,7 @@ verifyLogin = async function (username, password){
 insertNidUser = async function(i_id,nid,dob,fname,lname,category_id){
     let connection;
     let insRows;
+    console.log(category_id);
     try{
         connection = await oracledb.getConnection(config);
         let result = await connection.execute
